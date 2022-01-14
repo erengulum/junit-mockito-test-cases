@@ -9,6 +9,8 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.spy;
 
 public class SpyTest {
+    //Avoid Spy tests. It is mostly for legacy systems. Avoid as much as possible...
+
 
     @Test
     public void test_mock(){

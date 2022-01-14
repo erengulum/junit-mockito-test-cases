@@ -10,7 +10,6 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.MockitoRule;
 
 import java.util.Arrays;
@@ -22,19 +21,17 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.*;
 
 @Slf4j
-//@RunWith(MockitoJUnitRunner.class) /instead of this we use Rule below(MockitoJUnit.rule();)
+//@RunWith(MockitoJUnitRunner.class) //instead of this we use Rule below(MockitoJUnit.rule();)
 public class TodoServiceImplInjectionTest {
 
-    @Rule
+    @Rule //instead of @RunWith annotation, we can define it like below
     public MockitoRule mockitoRule = MockitoJUnit.rule(); //all rules have to be public
 
     @Mock
     TodoService mockToDoService; //automatically create moch of service
 
-
     @InjectMocks //serviceImpl'in todoservice injection'a ihtiyacı vardı. Annotation sayesinde direkt gereken mockları injectliyor(tabi önce yukarıda mocklaman lazım)
     TodoServiceImpl todoServiceImpl;
-
 
     @Captor
     ArgumentCaptor<String> stringArgumentCaptor;
@@ -43,12 +40,14 @@ public class TodoServiceImplInjectionTest {
     @Test
     public void testRetrieveTodosRelatedToSpring_usingAMock(){
 
+        //given
         List<String> todos = Arrays.asList("Learn Spring MVC","Learn Spring MVC","Angular");
-
         when (mockToDoService.retrieveTodos(anyString())).thenReturn(todos); //no we mocked the service implementation
 
-
+        //when
         List<String> filteredTodos= todoServiceImpl.retrieveSpringTodos("Dummy");
+
+        //then
         assertEquals(2,filteredTodos.size());
     }
 
@@ -57,10 +56,10 @@ public class TodoServiceImplInjectionTest {
 
         List<String> todos = Arrays.asList(); //empty list
 
-        when (mockToDoService.retrieveTodos(anyString())).thenReturn(todos); //return a empty lisy
+        when (mockToDoService.retrieveTodos(anyString())).thenReturn(todos); //mock will return a empty list not NULL
 
         List<String> filteredTodos= todoServiceImpl.retrieveSpringTodos("Dummy");
-        assertEquals(0,filteredTodos.size()); //since it's empty lsti, expected value should be 0
+        assertEquals(0,filteredTodos.size()); //since it's empty list, expected value should be 0
     }
 
 
@@ -69,12 +68,8 @@ public class TodoServiceImplInjectionTest {
     public void testRetrieveTodosRelatedToSpring_usingBDDMock(){
 
         //Given - Setup
-
         List<String> todos = Arrays.asList("Learn Spring MVC","Learn Spring MVC","Angular");
-
-
         given(mockToDoService.retrieveTodos(anyString())).willReturn(todos); //instead of when-thenReturn we use given-willReturn for BDD case ()
-
 
 
         //When - specific method calls / Actions
@@ -91,9 +86,7 @@ public class TodoServiceImplInjectionTest {
     public void testDeleteTodosNotRelatedToSpring_usingBDD(){
 
         //Given - Setup
-
         List<String> todos = Arrays.asList("Learn Spring MVC","Learn Spring MVC","Angular");
-
         given(mockToDoService.retrieveTodos(anyString())).willReturn(todos); //instead of when-thenReturn we use given-willReturn for BDD case ()
 
 
@@ -112,11 +105,8 @@ public class TodoServiceImplInjectionTest {
     @Test
     public void testDeleteTodosNotRelatedToSpring_usingBDD_argumentCapture(){
 
-
         //Given - Setup
-
         List<String> todos = Arrays.asList("Learn Spring MVC","Learn Spring MVC","Angular");
-
         given(mockToDoService.retrieveTodos(anyString())).willReturn(todos); //instead of when-thenReturn we use given-willReturn for BDD case ()
 
 
@@ -125,7 +115,6 @@ public class TodoServiceImplInjectionTest {
 
 
         //Then - Asserts
-
         then(mockToDoService).should().deleteToDo(stringArgumentCaptor.capture()); //captures the argument
         assertThat(stringArgumentCaptor.getValue(),is("Angular")); //check if argument is equals to expected value(Angular)
 
@@ -137,8 +126,7 @@ public class TodoServiceImplInjectionTest {
 
 
         //Given - Setup
-
-        List<String> todos = Arrays.asList("Learn MongoDB","Learn Spring MVC","Angular");
+        List<String> todos = Arrays.asList("MongoDB","Spring MVC","Angular");
         given(mockToDoService.retrieveTodos(anyString())).willReturn(todos); //instead of when-thenReturn we use given-willReturn for BDD case ()
 
 

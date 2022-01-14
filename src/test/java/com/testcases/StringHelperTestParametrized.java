@@ -1,6 +1,5 @@
 package com.testcases;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -10,10 +9,10 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
-public class StringHelperTestParametrized {
-//her Parametrized classında yalnızca bir tane test bulnuur çünkü 1 tane constructor var
+public class StringHelperTestParametrized {//her Parametrized classında yalnızca bir tane test bulunur çünkü 1 tane constructor var
 
     StringHelper stringHelper = new StringHelper();
+
 
     //parameters
     private String input;
@@ -26,7 +25,7 @@ public class StringHelperTestParametrized {
 
     @Parameterized.Parameters //thank to this annotation, it will directly map the return value to the parameters defined above(input,expectedOutput)
     public static Collection<String[]> testConditions(){
-        String expectedOutputs[][] = {{"AD","CD"},{"AACD","CD"}};
+        String expectedOutputs[][] = {{"AD","D"},{"AACD","CD"}};
 
         return Arrays.asList(expectedOutputs);
 
@@ -36,12 +35,9 @@ public class StringHelperTestParametrized {
     //all unit tests should be public and void, otherwise it wont work
     @Test
     public void testTruncateAInFirst2Positions(){
-
         assertEquals(expectedOutput, stringHelper.truncateAInFirst2Positions(input));
 
     }
-
-
 
 
 }
