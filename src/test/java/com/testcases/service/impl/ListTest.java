@@ -7,10 +7,11 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given; //BDD mockito is for Behavior Driven Development
+import static org.hamcrest.CoreMatchers.is;
 
 public class ListTest {
 
@@ -45,5 +46,21 @@ public class ListTest {
         List listMock = mock(List.class); //we mock the list class of the java core
         when(listMock.get(anyInt())).thenThrow(new RuntimeException("Problem Occured! Runtime Exc. is on"));
         listMock.get(0);
+    }
+
+    @Test
+    public void test_mockListGet_BDD(){
+
+        //given-setup
+        List<String> listMock = mock(List.class); //we mock the list class of the java core
+        given(listMock.get(anyInt())).willReturn("test-string");
+
+        //when -  actual method calls/actions
+        String firstOutput = listMock.get(0);
+        String secondOutput = listMock.get(0);
+
+        //then - asserts
+        assertThat(firstOutput,is("test-string"));
+        assertThat(secondOutput,is("test-string"));
     }
 }
